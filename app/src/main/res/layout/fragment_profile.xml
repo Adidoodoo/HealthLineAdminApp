@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:background="#FFFFFF"
+    android:padding="24dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:text="User Profile"
+        android:textColor="#3D60EB"
+        android:textSize="28sp"
+        android:textStyle="bold" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#BDBDBD"
+        android:layout_marginVertical="8dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#FFFFFF"
+        android:elevation="8dp"
+        android:padding="24dp">
+
+        <TextView
+            android:id="@+id/textHospitalName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="John Doe"
+            android:textColor="#5973DE"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:gravity="center" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#BDBDBD"
+            android:layout_marginVertical="8dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/email"
+                app:tint="#5973DE"/>
+
+            <TextView
+                android:id="@+id/textHospitalEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="john.doe@example.com"
+                android:textSize="16sp"
+                android:textColor="#000000"
+                android:layout_marginStart="16dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/phone"
+                app:tint="#5973DE"/>
+
+            <TextView
+                android:id="@+id/textHospitalMobileNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="09154443332"
+                android:textSize="16sp"
+                android:textColor="#000000"
+                android:layout_marginStart="16dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/map"
+                app:tint="#5973DE"/>
+
+            <TextView
+                android:id="@+id/textHospitalAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="address"
+                android:textSize="16sp"
+                android:textColor="#000000"
+                android:layout_marginStart="16dp"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textAppInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="HealthLine"
+            android:textColor="#5973DE"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:gravity="center" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#BDBDBD"
+            android:layout_marginVertical="8dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_facebook"
+                app:tint="#5973DE"/>
+
+            <TextView
+                android:id="@+id/textFacebookPage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="fb.com/HealthLineApp"
+                android:textSize="16sp"
+                android:textColor="#000000"
+                android:layout_marginStart="16dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/logo" />
+
+            <TextView
+                android:id="@+id/textContactNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+63 965 214 5859"
+                android:textSize="16sp"
+                android:textColor="#000000"
+                android:layout_marginStart="16dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonLogout"
+        android:layout_width="200dp"
+        android:layout_height="52dp"
+        android:text="Logout"
+        android:backgroundTint="#FFFFFF"
+        android:textColor="#5973DE"
+        android:strokeColor="#5973DE"
+        android:layout_marginTop="32dp"/>
+</LinearLayout>

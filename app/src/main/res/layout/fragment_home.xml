@@ -1,0 +1,41 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="#FFFFFF"
+    android:padding="24dp">
+
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/logo"
+        android:layout_marginBottom="24dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ADMIN"
+        android:textSize="24sp"
+        android:textColor="#5973DE"
+        android:textStyle="bold"
+        android:layout_marginBottom="48dp"/>
+
+    <Button
+        android:id="@+id/buttonQueue"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="Manage Queue"
+        android:backgroundTint="#5973DE"
+        android:textColor="#FFFFFF"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/buttonDept"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="Manage Departments"
+        android:backgroundTint="#5973DE"
+        android:textColor="#FFFFFF"
+        android:strokeWidth="1"/>
+</LinearLayout>
