@@ -194,32 +194,22 @@
             android:layout_marginTop="8dp">
 
             <Button
-                android:id="@+id/btnMoveUp"
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:layout_marginBottom="8dp"
-                android:text="Move Up"
-                android:textSize="16sp"
-                android:backgroundTint="#5973DE"
-                android:textColor="#FFFFFF"/>
-
-            <Button
-                android:id="@+id/btnMoveDown"
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:layout_marginBottom="8dp"
-                android:text="Move Down"
-                android:textSize="16sp"
-                android:backgroundTint="#5973DE"
-                android:textColor="#FFFFFF"/>
-
-            <Button
                 android:id="@+id/btnDeleteQueue"
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
                 android:text="Delete Queue"
                 android:textSize="16sp"
+                android:layout_marginBottom="8dp"
                 android:backgroundTint="#D32F2F"
+                android:textColor="#FFFFFF"/>
+
+            <Button
+                android:id="@+id/btnCompleteQueue"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:text="Complete Queue"
+                android:textSize="16sp"
+                android:backgroundTint="#4CAF50"
                 android:textColor="#FFFFFF"/>
         </LinearLayout>
     </LinearLayout>

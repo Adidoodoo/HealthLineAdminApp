@@ -29,7 +29,11 @@ public class departmentAdapter extends RecyclerView.Adapter<departmentAdapter.De
         Department department = departments.get(position);
         holder.departmentNameTextView.setText(department.getDepartmentName());
         holder.departmentDoctorTextView.setText(department.getDoctorName());
-        holder.departmentQueueNumberTextView.setText(String.valueOf(department.getCurrentQueue()));
+        if (!department.isOpen()) {
+            holder.departmentQueueNumberTextView.setText("Closed");
+        } else {
+            holder.departmentQueueNumberTextView.setText(String.valueOf(department.getCurrentQueue()));
+        }
     }
 
     @Override

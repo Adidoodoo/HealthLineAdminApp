@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
@@ -15,11 +14,11 @@
         android:layout_height="wrap_content"
         android:text="Cardiology Department"
         android:textColor="#5973DE"
-        android:textSize="22sp"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvDoctorName"
@@ -31,49 +30,169 @@
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvDepartmentName"/>
+        app:layout_constraintTop_toBottomOf="@id/tvDepartmentName" />
 
-    <TextView
-        android:id="@+id/tvCurrentQueue"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewQueue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvDoctorName">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/tvCurrentQueueLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Current Queue"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvCurrentQueue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="15"
+                android:textColor="#2E7D32"
+                android:textSize="72sp"
+                android:textStyle="bold"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvCurrentQueueLabel" />
+
+            <Button
+                android:id="@+id/btnMoveUp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:backgroundTint="#5973DE"
+                android:elevation="4dp"
+                android:text="Move Up"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvCurrentQueue" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <Button
+        android:id="@+id/btnCloseDepartment"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Close Department"
+        android:textAllCaps="false"
+        android:textSize="18sp"
+        android:backgroundTint="#D32F2F"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="24dp"
+        android:elevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cardViewQueue" />
+
+    <LinearLayout
+        android:id="@+id/countersLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="15"
-        android:textColor="#2E7D32"
-        android:textSize="72sp"
-        android:textStyle="bold"
-        android:layout_marginTop="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:orientation="vertical"
+        android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvDoctorName"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnCloseDepartment">
+
+        <TextView
+            android:id="@+id/tvQueueCountLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Queue Count"
+            android:textSize="16sp"
+            android:textColor="#000000"
+            android:layout_marginBottom="4dp"
+            android:layout_gravity="center_horizontal"/>
+
+        <TextView
+            android:id="@+id/tvQueueCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textSize="24sp"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:layout_gravity="center_horizontal"/>
+
+        <TextView
+            android:id="@+id/tvQueuesCancelledLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Patients Cancelled/Removed"
+            android:textSize="16sp"
+            android:textColor="#000000"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="4dp"
+            android:layout_gravity="center_horizontal"/>
+
+        <TextView
+            android:id="@+id/tvQueuesCancelled"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textSize="24sp"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:layout_gravity="center_horizontal"/>
+
+        <TextView
+            android:id="@+id/tvQueuesCompletedLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Patients Processed"
+            android:textSize="16sp"
+            android:textColor="#000000"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="4dp"
+            android:layout_gravity="center_horizontal"/>
+
+        <TextView
+            android:id="@+id/tvQueuesCompleted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textSize="24sp"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:layout_gravity="center_horizontal"/>
+
+    </LinearLayout>
 
     <Button
-        android:id="@+id/btnMoveUp"
-        android:layout_width="0dp"
+        android:id="@+id/btnResetCounters"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Move Up"
+        android:text="Reset Counters"
         android:textAllCaps="false"
-        android:textSize="18sp"
-        android:backgroundTint="#5973DE"
+        android:textSize="16sp"
+        android:backgroundTint="#616161"
         android:textColor="#FFFFFF"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintEnd_toStartOf="@id/btnMoveDown"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvCurrentQueue"/>
-
-    <Button
-        android:id="@+id/btnMoveDown"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Move Down"
-        android:textAllCaps="false"
-        android:textSize="18sp"
-        android:backgroundTint="#5973DE"
-        android:textColor="#FFFFFF"
-        android:layout_marginTop="48dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:elevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/btnMoveUp"
-        app:layout_constraintTop_toBottomOf="@id/tvCurrentQueue"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/countersLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

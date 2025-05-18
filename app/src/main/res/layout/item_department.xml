@@ -41,13 +41,14 @@
 
         <TextView
             android:id="@+id/tvQueueCount"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
+            android:minWidth="80dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="12"
             android:textColor="#D32F2F"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:gravity="end"/>
+            android:gravity="center"/>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

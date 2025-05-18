@@ -45,12 +45,18 @@ public class departmentQueueActivity extends AppCompatActivity {
                                 .document(hospitalName)
                                 .collection("departments")
                                 .get()
-                                .addOnCompleteListener(task -> {
-                                    if (task.isSuccessful()) {
+                                .addOnSuccessListener(querySnapshot -> {
+                                    if (!querySnapshot.isEmpty()) {
                                         List<Department> departments = new ArrayList<>();
-                                        for (QueryDocumentSnapshot document : task.getResult()) {
-                                            Department department = document.toObject(Department.class);
-                                            departments.add(department);
+                                        for (QueryDocumentSnapshot doc : querySnapshot) {
+                                            String departmentName = doc.getString("departmentName");
+                                            String doctorName = doc.getString("doctorName");
+                                            Long currentQueue = doc.getLong("currentQueue");
+                                            boolean isOpen = doc.getBoolean("isOpen");
+                                            if (currentQueue == null) {
+                                                currentQueue = 0L;
+                                            }
+                                            departments.add(new Department(departmentName, doctorName, currentQueue.intValue(), isOpen));
                                         }
 
                                         adapter = new departmentAdapter(departments);

@@ -15,18 +15,19 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.WriteBatch;
 
 public class departmentStatusActivity extends AppCompatActivity {
 
-    private Button btnMoveUp, btnMoveDown;
-    private TextView tvDepartmentName, tvDoctorName, tvCurrentQueue;
+    private Button moveUp, closeDepartment, reset;
+    private TextView depName, docName, currentQueue, queueCount, queuesCancelled, queuesCompleted;
     private FirebaseFirestore db;
     private String hospitalName;
     private String departmentName;
     private DocumentReference departmentRef;
+    private boolean isOpen = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +40,15 @@ public class departmentStatusActivity extends AppCompatActivity {
             return insets;
         });
 
-        tvDepartmentName = findViewById(R.id.tvDepartmentName);
-        tvDoctorName = findViewById(R.id.tvDoctorName);
-        tvCurrentQueue = findViewById(R.id.tvCurrentQueue);
-        btnMoveUp = findViewById(R.id.btnMoveUp);
-        btnMoveDown = findViewById(R.id.btnMoveDown);
+        depName = findViewById(R.id.tvDepartmentName);
+        docName = findViewById(R.id.tvDoctorName);
+        currentQueue = findViewById(R.id.tvCurrentQueue);
+        moveUp = findViewById(R.id.btnMoveUp);
+        closeDepartment = findViewById(R.id.btnCloseDepartment);
+        reset = findViewById(R.id.btnResetCounters);
+        queueCount = findViewById(R.id.tvQueueCount);
+        queuesCancelled = findViewById(R.id.tvQueuesCancelled);
+        queuesCompleted = findViewById(R.id.tvQueuesCompleted);
 
         db = FirebaseFirestore.getInstance();
         hospitalName = getIntent().getStringExtra("hospitalName");
@@ -57,8 +62,9 @@ public class departmentStatusActivity extends AppCompatActivity {
 
             loadDepartmentDetails();
 
-            btnMoveUp.setOnClickListener(v -> showMoveUpWarning());
-            btnMoveDown.setOnClickListener(v -> showMoveDownWarning());
+            moveUp.setOnClickListener(v -> showMoveUpWarning());
+            closeDepartment.setOnClickListener(v -> showCloseDepartmentDialog());
+            reset.setOnClickListener(v -> showResetCountersDialog());
         } else {
             Toast.makeText(this, "Missing hospital or department information", Toast.LENGTH_SHORT).show();
             finish();
@@ -68,14 +74,26 @@ public class departmentStatusActivity extends AppCompatActivity {
     private void loadDepartmentDetails() {
         departmentRef.get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
-                // Update UI with department details
                 String deptName = documentSnapshot.getString("departmentName");
                 String doctorName = documentSnapshot.getString("doctorName");
-                Long currentQueue = documentSnapshot.getLong("currentQueue");
+                Boolean open = documentSnapshot.getBoolean("isOpen");
 
-                tvDepartmentName.setText(deptName);
-                tvDoctorName.setText(doctorName);
-                tvCurrentQueue.setText(String.valueOf(currentQueue));
+                depName.setText(deptName);
+                docName.setText(doctorName);
+                currentQueue.setText(String.valueOf(documentSnapshot.getLong("currentQueue")));
+                queueCount.setText(String.valueOf(documentSnapshot.getLong("queueCount")));
+                queuesCancelled.setText(String.valueOf(documentSnapshot.getLong("queuesCancelled")));
+                queuesCompleted.setText(String.valueOf(documentSnapshot.getLong("queuesCompleted")));
+                if (open != null) {
+                    isOpen = open;
+                }
+                if (!isOpen) {
+                    closeDepartment.setText("Open Department");
+                    currentQueue.setText("Closed");
+                } else {
+                    closeDepartment.setText("Close Department");
+                }
+
             } else {
                 Toast.makeText(this, "Department details not found", Toast.LENGTH_SHORT).show();
             }
@@ -89,12 +107,11 @@ public class departmentStatusActivity extends AppCompatActivity {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.move_up_warning);
         dialog.setCancelable(true);
+        Button btnCancel = dialog.findViewById(R.id.btnNo);
+        Button btnMove = dialog.findViewById(R.id.btnYes);
 
-        Button btnYes = dialog.findViewById(R.id.btnCancel);
-        Button btnNo = dialog.findViewById(R.id.btnRemove);
-
-        btnNo.setOnClickListener(v -> dialog.dismiss());
-        btnYes.setOnClickListener(v -> {
+        btnCancel.setOnClickListener(v -> dialog.dismiss());
+        btnMove.setOnClickListener(v -> {
             dialog.dismiss();
             showLoadingDialog(() -> adjustCurrentQueue(1));
         });
@@ -102,19 +119,46 @@ public class departmentStatusActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    private void showMoveDownWarning() {
+    private void showCloseDepartmentDialog() {
         Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.move_down_warning);
+        dialog.setContentView(R.layout.close_department_warning);
         dialog.setCancelable(true);
 
-        Button btnYes = dialog.findViewById(R.id.btnCancel);
-        Button btnNo = dialog.findViewById(R.id.btnRemove);
+        TextView dialogTitle = dialog.findViewById(R.id.title);
+        TextView dialogMessage = dialog.findViewById(R.id.message);
+        Button btnCancel = dialog.findViewById(R.id.btnCancel);
+        Button btnClose = dialog.findViewById(R.id.btnClose);
 
-        btnNo.setOnClickListener(v -> dialog.dismiss());
-        btnYes.setOnClickListener(v -> {
+        String title = isOpen ? "Close Department" : "Open Department";
+        String message = isOpen ? "Are you sure you want to close this department?" : "Are you sure you want to open this department?";
+        String openOrClose = isOpen? "Close" : "Open";
+
+        dialogTitle.setText(title);
+        dialogMessage.setText(message);
+        btnClose.setText(openOrClose);
+
+        btnCancel.setOnClickListener(v -> dialog.dismiss());
+        btnClose.setOnClickListener(v -> {
             dialog.dismiss();
-            showLoadingDialog(() -> adjustCurrentQueue(-1));
+            showLoadingDialog(this::toggleDepartmentStatus);
+        });
+
+        dialog.show();
+    }
+
+    private void showResetCountersDialog() {
+        Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.reset_counters_warning);
+        dialog.setCancelable(true);
+        Button btnCancel = dialog.findViewById(R.id.btnCancel);
+        Button btnReset = dialog.findViewById(R.id.btnReset);
+
+        btnCancel.setOnClickListener(v -> dialog.dismiss());
+        btnReset.setOnClickListener(v -> {
+            dialog.dismiss();
+            showLoadingDialog(this::resetCounters);
         });
 
         dialog.show();
@@ -133,21 +177,55 @@ public class departmentStatusActivity extends AppCompatActivity {
         }, 1000);
     }
 
-    private void adjustCurrentQueue(int change) {
-        departmentRef.update("currentQueue", FieldValue.increment(change))
-                .addOnSuccessListener(aVoid -> {
-                    departmentRef.get().addOnSuccessListener(documentSnapshot -> {
-                        if (documentSnapshot.exists()) {
-                            Long updatedQueue = documentSnapshot.getLong("currentQueue");
-                            tvCurrentQueue.setText(String.valueOf(updatedQueue));
+    private void adjustCurrentQueue(int change) { //This system initially had a moveDown button meant to decrement the queue number. It was deemed redudant by our instructor
+        WriteBatch batch = db.batch();
+        batch.update(departmentRef, "currentQueue", FieldValue.increment(change));
+        batch.update(departmentRef, "queueCount", FieldValue.increment(change));
 
-                            String message = change < 0 ? "Queue moved up successfully" : "Queue moved down successfully";
-                            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-                        }
-                    });
+        batch.commit().addOnSuccessListener(aVoid -> {
+            departmentRef.get().addOnSuccessListener(documentSnapshot -> {
+                if (documentSnapshot.exists()) {
+                    Long updatedQueue = documentSnapshot.getLong("currentQueue");
+                    currentQueue.setText(String.valueOf(updatedQueue));
+
+                    String message = change > 0 ? "Queue moved up successfully" : "Queue moved down successfully";
+                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }).addOnFailureListener(e -> {
+            Toast.makeText(this, "Failed to update queue: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        });
+    }
+
+    private void toggleDepartmentStatus() {
+        isOpen = !isOpen;
+        departmentRef.update("isOpen", isOpen)
+                .addOnSuccessListener(aVoid -> {
+                    String message = isOpen ? "Department opened" : "Department closed";
+                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+                    if (!isOpen) {
+                        closeDepartment.setText("Open Department");
+
+                    } else {
+                        closeDepartment.setText("Close Department");
+                    }
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Failed to update queue: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Failed to toggle department status: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
+    }
+
+    private void resetCounters() {
+        departmentRef.update("currentQueue", 1, "queueCount", 0, "queuesCancelled", 0, "queuesCompleted", 0)
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(this, "Counters reset", Toast.LENGTH_SHORT).show();
+                    currentQueue.setText("1");
+                    queueCount.setText("0");
+                    queuesCancelled.setText("0");
+                    queuesCompleted.setText("0");
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Failed to reset counters: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
     }
 }

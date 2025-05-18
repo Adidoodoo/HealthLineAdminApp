@@ -24,7 +24,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class profileFragment extends Fragment {
 
     private TextView nameDisplay, emailDisplay, mobNumDisplay, addressDisplay;
-    private Button logoutButton;
+    private Button logoutButton, aboutUsButton;
     private FirebaseFirestore db;
     private FirebaseAuth authen;
 
@@ -34,6 +34,7 @@ public class profileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         logoutButton = view.findViewById(R.id.buttonLogout);
+        aboutUsButton = view.findViewById(R.id.buttonAboutUs);
         nameDisplay = view.findViewById(R.id.textHospitalName);
         emailDisplay = view.findViewById(R.id.textHospitalEmail);
         mobNumDisplay = view.findViewById(R.id.textHospitalMobileNumber);
@@ -51,9 +52,8 @@ public class profileFragment extends Fragment {
             getActivity().finish();
         }
 
-        logoutButton.setOnClickListener(v -> {
-            logoutDialog();
-        });
+        logoutButton.setOnClickListener(v -> {logoutDialog();});
+        aboutUsButton.setOnClickListener(v -> {aboutUsDialog();});
 
         return view;
     }
@@ -118,5 +118,17 @@ public class profileFragment extends Fragment {
         Toast.makeText(getActivity(), "Logout Successful", Toast.LENGTH_SHORT).show();
         startActivity(new Intent(getActivity(), MainActivity.class));
         getActivity().finish();
+    }
+
+    private void aboutUsDialog(){
+        Dialog dialog = new Dialog(requireContext());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.about_us);
+        dialog.setCancelable(true);
+
+        Button close = dialog.findViewById(R.id.btnClose);
+        close.setOnClickListener(v -> dialog.dismiss());
+
+        dialog.show();
     }
 }

@@ -4,14 +4,16 @@ public class Department {
     private String departmentName;
     private String doctorName;
     private int currentQueue;
+    private boolean isOpen;
 
     public Department() {
     }
 
-    public Department(String departmentName, String doctorName, int currentQueue) {
+    public Department(String departmentName, String doctorName, int currentQueue, boolean isOpen) {
         this.departmentName = departmentName;
         this.doctorName = doctorName;
         this.currentQueue = currentQueue;
+        this.isOpen = isOpen;
     }
 
     public String getDepartmentName() {
@@ -36,5 +38,13 @@ public class Department {
 
     public void setCurrentQueue(int currentQueue) {
         this.currentQueue = currentQueue;
+    }
+
+    public boolean isOpen() {
+        return isOpen;
+    }
+
+    public void setOpen(boolean open) {
+        isOpen = open;
     }
 }
